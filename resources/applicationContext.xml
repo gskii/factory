@@ -29,27 +29,27 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     <bean id="stockToMachineARoute" class="ru.nntu.vst.gorbatovskii.factory.model.common.Route">
         <property name="pointA" ref="stockLocation"/>
         <property name="pointB" ref="machineALocation"/>
-        <property name="weight" value="2"/>
+        <property name="weight" value="6"/>
     </bean>
 
     <bean id="machineAToMachineBRoute" class="ru.nntu.vst.gorbatovskii.factory.model.common.Route">
         <property name="pointA" ref="machineALocation"/>
         <property name="pointB" ref="machineBLocation"/>
-        <property name="weight" value="2"/>
+        <property name="weight" value="7"/>
     </bean>
 
     <bean id="machineBToStorageRoute" class="ru.nntu.vst.gorbatovskii.factory.model.common.Route">
         <property name="pointA" ref="machineBLocation"/>
         <property name="pointB" ref="storageLocation"/>
-        <property name="weight" value="2"/>
+        <property name="weight" value="5"/>
     </bean>
 
     <!-- Robots configuration -->
 
     <bean id="robotManipulationTimeCalculationStrategy"
           class="ru.nntu.vst.gorbatovskii.factory.model.time.RangeTimeCalculationStrategy">
-        <property name="average" value="10"/>
-        <property name="averageVariation" value="2"/>
+        <property name="average" value="8"/>
+        <property name="averageVariation" value="1"/>
     </bean>
 
     <bean abstract="true" id="abstractRobot" class="ru.nntu.vst.gorbatovskii.factory.model.robot.RobotImpl">
@@ -107,8 +107,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     </bean>
 
     <bean id="robotProvider" class="ru.nntu.vst.gorbatovskii.factory.model.robot.RobotProviderImpl">
-        <property name="eligibilityStrategy" ref="determinedRobotEligibilityStrategy"/>
-        <!--<property name="eligibilityStrategy" ref="freeRobotEligibilityStrategy"/>-->
+        <!--<property name="eligibilityStrategy" ref="determinedRobotEligibilityStrategy"/>-->
+        <property name="eligibilityStrategy" ref="freeRobotEligibilityStrategy"/>
     </bean>
 
     <!-- Storage configuration -->
@@ -123,9 +123,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 
     <!-- Stock configuration -->
 
-    <bean id="stockTimeStrategy" class="ru.nntu.vst.gorbatovskii.factory.model.time.RangeTimeCalculationStrategy">
-        <property name="average" value="10"/>
-        <property name="averageVariation" value="2"/>
+    <bean id="stockTimeStrategy" class="ru.nntu.vst.gorbatovskii.factory.model.time.ExponentialTimeCalculationStrategy">
+        <property name="average" value="40"/>
     </bean>
 
     <bean id="stock" class="ru.nntu.vst.gorbatovskii.factory.model.common.Stock">
@@ -142,9 +141,9 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         <property name="eventBus" ref="eventBus"/>
     </bean>
 
-    <bean id="machineATimeStrategy" class="ru.nntu.vst.gorbatovskii.factory.model.time.RangeTimeCalculationStrategy">
-        <property name="average" value="10"/>
-        <property name="averageVariation" value="2"/>
+    <bean id="machineATimeStrategy" class="ru.nntu.vst.gorbatovskii.factory.model.time.GaussTimeCalculationStrategy">
+        <property name="mean" value="60"/>
+        <property name="standardDeviation" value="10"/>
     </bean>
 
     <bean id="machineA" class="ru.nntu.vst.gorbatovskii.factory.model.common.Machine" parent="abstractMachine">
@@ -154,9 +153,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         <property name="timeCalculationStrategy" ref="machineATimeStrategy"/>
     </bean>
 
-    <bean id="machineBTimeStrategy" class="ru.nntu.vst.gorbatovskii.factory.model.time.RangeTimeCalculationStrategy">
-        <property name="average" value="10"/>
-        <property name="averageVariation" value="2"/>
+    <bean id="machineBTimeStrategy" class="ru.nntu.vst.gorbatovskii.factory.model.time.ExponentialTimeCalculationStrategy">
+        <property name="average" value="100"/>
     </bean>
 
     <bean id="machineB" class="ru.nntu.vst.gorbatovskii.factory.model.common.Machine" parent="abstractMachine">
