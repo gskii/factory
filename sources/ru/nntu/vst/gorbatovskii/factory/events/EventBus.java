@@ -4,6 +4,7 @@ public interface EventBus {
 
     void registerEvent(Event event);
 
+    boolean hasNext();
     void executeNext();
 
 }

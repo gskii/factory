@@ -5,4 +5,6 @@ import ru.nntu.vst.gorbatovskii.factory.events.Handler;
 public interface TerminateSystemHandler extends Handler {
 
     void onSystemTerminate(TerminateSystemEvent event);
+
+    int getOrder();
 }

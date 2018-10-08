@@ -2,9 +2,6 @@ package ru.nntu.vst.gorbatovskii.factory.model.common;
 
 import org.springframework.beans.factory.annotation.Required;
 
-/**
- * Created by GSCII on 06.10.2018.
- */
 public class Route {
     private Location pointA;
     private Location pointB;

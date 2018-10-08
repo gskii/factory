@@ -24,6 +24,7 @@ public class EventBusImpl implements EventBus {
         });
     }
 
+    @Override
     public boolean hasNext() {
         return !eventQueue.isEmpty();
     }
@@ -32,6 +33,7 @@ public class EventBusImpl implements EventBus {
     public void executeNext() {
         EventWrapper wrapper = eventQueue.pop();
         currentTime = wrapper.getEventTime();
+        System.out.println(wrapper);
         wrapper.getEvent().handle();
     }
 
@@ -50,6 +52,14 @@ public class EventBusImpl implements EventBus {
 
         private double getEventTime() {
             return eventTime;
+        }
+
+        @Override
+        public String toString() {
+            return "EventWrapper{" +
+                    "event=" + event +
+                    ", eventTime=" + eventTime +
+                    '}';
         }
     }
 }

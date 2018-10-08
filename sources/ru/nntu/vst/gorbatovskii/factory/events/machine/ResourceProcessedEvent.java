@@ -2,9 +2,6 @@ package ru.nntu.vst.gorbatovskii.factory.events.machine;
 
 import ru.nntu.vst.gorbatovskii.factory.events.LocalEvent;
 
-/**
- * Created by GSCII on 07.10.2018.
- */
 public class ResourceProcessedEvent extends LocalEvent<ResourceProcessedHandler> {
 
     public ResourceProcessedEvent(double duration, ResourceProcessedHandler handler) {
@@ -13,6 +10,6 @@ public class ResourceProcessedEvent extends LocalEvent<ResourceProcessedHandler>
 
     @Override
     protected void handle() {
-
+        handler.onResourceProcessed();
     }
 }

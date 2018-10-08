@@ -16,21 +16,20 @@ public class Machine implements ResourceConsumer, ResourceProducer, ResourceProc
     private EventBus eventBus;
     private TimeCalculationStrategy timeCalculationStrategy;
 
-    // Next resource consumer specified in Spring configuration
-    // For Machine it can't be null
-    private ResourceConsumer nextResourceConsumer;
-
-    // Producer that produced new resource and is waiting
-    // until current consumer hands over processed resource
-    // and finds robot to deliver new resource
-    private ResourceProducer readyProducer;
+    // Next resource consumer and previous resource producer specified in Spring configuration/
+    // For Machine both of them can't be null
+    private ResourceConsumer consumer;
+    private ResourceProducer producer;
 
     private Location location;
     private Resource resource;
 
+    private boolean transferInProgress;
+
     @Override
     public void consumeResource(Resource resource) {
         this.resource = resource;
+        transferInProgress = false;
         eventBus.registerEvent(
                 new ResourceProcessedEvent(timeCalculationStrategy.getProcessingTime(), this)
         );
@@ -40,30 +39,32 @@ public class Machine implements ResourceConsumer, ResourceProducer, ResourceProc
     public Resource produceResource() {
         Resource resourceToProduce = resource;
         resource = null;
+        requestResource();
         return resourceToProduce;
     }
 
     @Override
-    public void onResourceAppeared(ResourceProducer producer) {
-        readyProducer = producer;
-        if (resource == null) {
-            Robot robot = robotProvider.getNearestUnoccupiedRobot(this);
-            if (robot != null) {
-                readyProducer = null;
-                robot.transferResource(producer, this);
-            }
-        }
-    }
-
-    @Override
-    public void onResourceProcessed() {
-        nextResourceConsumer.onResourceAppeared(this);
+    public void onResourceAppeared() {
+        requestResource();
     }
 
     @Override
     public void onRobotReleased(RobotReleasedEvent event) {
-        if (readyProducer != null) {
-            onResourceAppeared(readyProducer);
+        requestResource();
+    }
+
+    @Override
+    public void onResourceProcessed() {
+        consumer.onResourceAppeared();
+    }
+
+    private void requestResource() {
+        if (resource == null && !transferInProgress && producer.hasResources()) {
+            Robot robot = robotProvider.getNearestUnoccupiedRobot(this);
+            if (robot != null) {
+                transferInProgress = true;
+                robot.transferResource(producer, this);
+            }
         }
     }
 
@@ -72,14 +73,24 @@ public class Machine implements ResourceConsumer, ResourceProducer, ResourceProc
         return location;
     }
 
+    @Override
+    public boolean hasResources() {
+        return resource != null;
+    }
+
     @Required
     public void setLocation(Location location) {
         this.location = location;
     }
 
     @Required
-    public void setNextResourceConsumer(ResourceConsumer nextResourceConsumer) {
-        this.nextResourceConsumer = nextResourceConsumer;
+    public void setConsumer(ResourceConsumer consumer) {
+        this.consumer = consumer;
+    }
+
+    @Required
+    public void setProducer(ResourceProducer producer) {
+        this.producer = producer;
     }
 
     @Required

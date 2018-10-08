@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
     <bean id="eventBus" class="ru.nntu.vst.gorbatovskii.factory.events.EventBusImpl"/>
 
@@ -104,6 +107,67 @@
         <property name="eligibilityStrategy" ref="freeRobotEligibilityStrategy"/>
     </bean>
 
+    <!-- Storage configuration -->
+
+    <bean id="storage" class="ru.nntu.vst.gorbatovskii.factory.model.common.Storage">
+        <property name="terminateResourceCount" value="10"/>
+        <property name="location" ref="storageLocation"/>
+        <property name="eventBus" ref="eventBus"/>
+        <property name="robotProvider" ref="robotProvider"/>
+        <property name="producer" ref="machineB"/>
+    </bean>
+
+    <!-- Stock configuration -->
+
+    <bean id="stockTimeStrategy" class="ru.nntu.vst.gorbatovskii.factory.model.time.RangeTimeCalculationStrategy">
+        <property name="average" value="1000"/>
+        <property name="averageVariation" value="2"/>
+    </bean>
+
+    <bean id="stock" class="ru.nntu.vst.gorbatovskii.factory.model.common.Stock">
+        <property name="consumer" ref="machineA"/>
+        <property name="location" ref="stockLocation"/>
+        <property name="eventBus" ref="eventBus"/>
+        <property name="timeCalculationStrategy" ref="stockTimeStrategy"/>
+    </bean>
+
+    <!-- Machines configuration -->
+
+    <bean abstract="true" id="abstractMachine" class="ru.nntu.vst.gorbatovskii.factory.model.common.Machine">
+        <property name="robotProvider" ref="robotProvider"/>
+        <property name="eventBus" ref="eventBus"/>
+    </bean>
+
+    <bean id="machineATimeStrategy" class="ru.nntu.vst.gorbatovskii.factory.model.time.RangeTimeCalculationStrategy">
+        <property name="average" value="10"/>
+        <property name="averageVariation" value="2"/>
+    </bean>
+
+    <bean id="machineA" class="ru.nntu.vst.gorbatovskii.factory.model.common.Machine" parent="abstractMachine">
+        <property name="producer" ref="stock"/>
+        <property name="consumer" ref="machineB"/>
+        <property name="location" ref="machineALocation"/>
+        <property name="timeCalculationStrategy" ref="machineATimeStrategy"/>
+    </bean>
+
+    <bean id="machineBTimeStrategy" class="ru.nntu.vst.gorbatovskii.factory.model.time.RangeTimeCalculationStrategy">
+        <property name="average" value="10"/>
+        <property name="averageVariation" value="2"/>
+    </bean>
+
+    <bean id="machineB" class="ru.nntu.vst.gorbatovskii.factory.model.common.Machine" parent="abstractMachine">
+        <property name="producer" ref="machineA"/>
+        <property name="consumer" ref="storage"/>
+        <property name="location" ref="machineBLocation"/>
+        <property name="timeCalculationStrategy" ref="machineBTimeStrategy"/>
+    </bean>
+
+    <!-- System Terminate handlers -->
+    <bean id="exitProgramm" class="ru.nntu.vst.gorbatovskii.factory.events.system.ExitProgramSystemHandler">
+        <property name="order">
+            <util:constant static-field="java.lang.Integer.MAX_VALUE"/>
+        </property>
+    </bean>
 
 
 </beans>

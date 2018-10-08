@@ -12,13 +12,14 @@ import java.util.List;
 public class Storage implements ResourceConsumer {
 
     private RobotProvider robotProvider;
+    private ResourceProducer producer;
     private EventBus eventBus;
     private Location location;
     private int terminateResourceCount;
 
     private List<Resource> resources = new LinkedList<>();
 
-    public void onResourceAppeared(ResourceProducer producer) {
+    public void onResourceAppeared() {
         Robot robot = robotProvider.getNearestUnoccupiedRobot(this);
         robot.transferResource(producer, this);
     }
@@ -54,5 +55,10 @@ public class Storage implements ResourceConsumer {
     @Required
     public void setLocation(Location location) {
         this.location = location;
+    }
+
+    @Required
+    public void setProducer(ResourceProducer producer) {
+        this.producer = producer;
     }
 }

@@ -1,8 +1,8 @@
 package ru.nntu.vst.gorbatovskii.factory.model.common;
 
-public interface ResourceConsumer extends HasLocation {
+import ru.nntu.vst.gorbatovskii.factory.events.stock.ResourceAppearedHandler;
 
-    void onResourceAppeared(ResourceProducer producer);
+public interface ResourceConsumer extends HasLocation, ResourceAppearedHandler {
 
     void consumeResource(Resource resource);
 }

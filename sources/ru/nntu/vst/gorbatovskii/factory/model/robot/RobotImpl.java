@@ -26,9 +26,6 @@ public class RobotImpl implements Robot, ProducerApproachedHandler, ConsumerAppr
      * - Approaching of consumer
      * - Resource dropping
      * Method execution assumes that provider has resource and consumer is empty.
-     *
-     * @param producer
-     * @param consumer
      */
     @Override
     public void transferResource(ResourceProducer producer, ResourceConsumer consumer) {
