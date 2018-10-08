@@ -12,4 +12,9 @@ public class ResourceAppearedEvent extends LocalEvent<ResourceAppearedHandler> {
     protected void handle() {
         handler.onResourceAppeared();
     }
+
+    @Override
+    public String toString() {
+        return "stock.ResourceAppearedEvent";
+    }
 }

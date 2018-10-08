@@ -56,10 +56,7 @@ public class EventBusImpl implements EventBus {
 
         @Override
         public String toString() {
-            return "EventWrapper{" +
-                    "event=" + event +
-                    ", eventTime=" + eventTime +
-                    '}';
+            return "EventWrapper{[" + String.format("%.2f", eventTime) + "], " + event + "}";
         }
     }
 }

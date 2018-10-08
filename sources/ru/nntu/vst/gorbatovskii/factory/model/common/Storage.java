@@ -61,4 +61,9 @@ public class Storage implements ResourceConsumer {
     public void setProducer(ResourceProducer producer) {
         this.producer = producer;
     }
+
+    @Override
+    public String toString() {
+        return "Storage";
+    }
 }

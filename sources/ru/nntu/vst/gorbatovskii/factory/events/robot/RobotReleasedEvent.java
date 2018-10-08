@@ -1,11 +1,15 @@
 package ru.nntu.vst.gorbatovskii.factory.events.robot;
 
 import ru.nntu.vst.gorbatovskii.factory.events.GlobalEvent;
+import ru.nntu.vst.gorbatovskii.factory.model.robot.Robot;
 
 public class RobotReleasedEvent extends GlobalEvent<RobotReleasedHandler> {
 
-    public RobotReleasedEvent(double duration) {
+    private Robot robot;
+
+    public RobotReleasedEvent(double duration, Robot robot) {
         super(duration, RobotReleasedHandler.class);
+        this.robot = robot;
     }
 
     @Override
@@ -13,5 +17,10 @@ public class RobotReleasedEvent extends GlobalEvent<RobotReleasedHandler> {
         for (RobotReleasedHandler handler : getHandlers()) {
             handler.onRobotReleased(this);
         }
+    }
+
+    @Override
+    public String toString() {
+        return robot.toString() + ".RobotReleasedEvent";
     }
 }

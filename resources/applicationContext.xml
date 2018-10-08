@@ -58,14 +58,17 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     </bean>
 
     <bean id="robot1" class="ru.nntu.vst.gorbatovskii.factory.model.robot.RobotImpl" parent="abstractRobot">
+        <property name="name" value="robot1"/>
         <property name="location" ref="stockLocation"/>
     </bean>
 
     <bean id="robot2" class="ru.nntu.vst.gorbatovskii.factory.model.robot.RobotImpl" parent="abstractRobot">
+        <property name="name" value="robot2"/>
         <property name="location" ref="machineALocation"/>
     </bean>
 
     <bean id="robot3" class="ru.nntu.vst.gorbatovskii.factory.model.robot.RobotImpl" parent="abstractRobot">
+        <property name="name" value="robot3"/>
         <property name="location" ref="storageLocation"/>
     </bean>
 
@@ -104,7 +107,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     </bean>
 
     <bean id="robotProvider" class="ru.nntu.vst.gorbatovskii.factory.model.robot.RobotProviderImpl">
-        <property name="eligibilityStrategy" ref="freeRobotEligibilityStrategy"/>
+        <property name="eligibilityStrategy" ref="determinedRobotEligibilityStrategy"/>
+        <!--<property name="eligibilityStrategy" ref="freeRobotEligibilityStrategy"/>-->
     </bean>
 
     <!-- Storage configuration -->
@@ -120,7 +124,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     <!-- Stock configuration -->
 
     <bean id="stockTimeStrategy" class="ru.nntu.vst.gorbatovskii.factory.model.time.RangeTimeCalculationStrategy">
-        <property name="average" value="1000"/>
+        <property name="average" value="10"/>
         <property name="averageVariation" value="2"/>
     </bean>
 

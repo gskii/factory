@@ -13,4 +13,9 @@ public class ResourceDroppedEvent extends RobotEvent<ResourceDroppedHandler> {
     protected void handle() {
         handler.onResourceDropped(this);
     }
+
+    @Override
+    public String toString() {
+        return handler.toString() + ".ResourceDroppedEvent{" + getConsumer() + "}";
+    }
 }

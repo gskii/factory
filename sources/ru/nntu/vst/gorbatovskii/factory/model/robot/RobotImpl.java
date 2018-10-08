@@ -15,6 +15,8 @@ public class RobotImpl implements Robot, ProducerApproachedHandler, ConsumerAppr
     private EventBus eventBus;
     private TimeCalculationStrategy timeCalculationStrategy;
 
+    private String name;
+
     private boolean occupied;
     private Resource resource;
     private Location location;
@@ -71,7 +73,7 @@ public class RobotImpl implements Robot, ProducerApproachedHandler, ConsumerAppr
         consumer.consumeResource(resource);
         resource = null;
         occupied = false;
-        eventBus.registerEvent(new RobotReleasedEvent(0));
+        eventBus.registerEvent(new RobotReleasedEvent(0, this));
     }
 
     @Override
@@ -82,6 +84,11 @@ public class RobotImpl implements Robot, ProducerApproachedHandler, ConsumerAppr
     @Override
     public Location getLocation() {
         return location;
+    }
+
+    @Required
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Required
@@ -97,5 +104,10 @@ public class RobotImpl implements Robot, ProducerApproachedHandler, ConsumerAppr
     @Required
     public void setTimeCalculationStrategy(TimeCalculationStrategy timeCalculationStrategy) {
         this.timeCalculationStrategy = timeCalculationStrategy;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

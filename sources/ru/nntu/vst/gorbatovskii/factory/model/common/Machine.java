@@ -31,7 +31,7 @@ public class Machine implements ResourceConsumer, ResourceProducer, ResourceProc
         this.resource = resource;
         transferInProgress = false;
         eventBus.registerEvent(
-                new ResourceProcessedEvent(timeCalculationStrategy.getProcessingTime(), this)
+                new ResourceProcessedEvent(timeCalculationStrategy.getProcessingTime(), this, this)
         );
     }
 
@@ -108,4 +108,8 @@ public class Machine implements ResourceConsumer, ResourceProducer, ResourceProc
         this.timeCalculationStrategy = timeCalculationStrategy;
     }
 
+    @Override
+    public String toString() {
+        return "Machine{" + location + "}";
+    }
 }

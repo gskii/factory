@@ -64,4 +64,9 @@ public class Stock implements ResourceProducer, ResourceAppearedHandler {
     public void setTimeCalculationStrategy(TimeCalculationStrategy timeCalculationStrategy) {
         this.timeCalculationStrategy = timeCalculationStrategy;
     }
+
+    @Override
+    public String toString() {
+        return "Stock";
+    }
 }

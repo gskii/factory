@@ -26,4 +26,9 @@ public class TerminateSystemEvent extends GlobalEvent<TerminateSystemHandler> {
             handler.onSystemTerminate(this);
         }
     }
+
+    @Override
+    public String toString() {
+        return "system.TerminateSystemEvent";
+    }
 }

@@ -13,4 +13,9 @@ public class ProducerApproachedEvent extends RobotEvent<ProducerApproachedHandle
     protected void handle() {
         handler.onProducerApproached(this);
     }
+
+    @Override
+    public String toString() {
+        return handler.toString() + ".ProducerApproachedEvent{" + getConsumer() + " -> " + getProducer() + "}";
+    }
 }
